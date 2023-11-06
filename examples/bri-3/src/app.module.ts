@@ -1,5 +1,6 @@
 import { classes } from '@automapper/classes';
 import { AutomapperModule } from '@automapper/nestjs';
+import { pojos } from '@automapper/pojos';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { PrismaService } from '../prisma/prisma.service';
@@ -29,9 +30,18 @@ import { LoggingModule } from './shared/logging/logging.module';
     LoggingModule,
     EncryptionModule,
     VsmModule,
-    AutomapperModule.forRoot({
-      strategyInitializer: classes(),
-    }),
+    AutomapperModule.forRoot(
+      [
+        {
+            name: 'default',
+            strategyInitializer: classes(),
+        },
+        {
+            name: 'pojos',
+            strategyInitializer: pojos(),
+        },
+      ]
+    ),
     AuthModule,
     AuthzModule,
     SubjectModule,

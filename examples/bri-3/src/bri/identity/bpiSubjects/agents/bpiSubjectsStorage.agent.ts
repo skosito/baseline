@@ -1,9 +1,10 @@
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { BpiSubject as BpiSubjectPrismaModel } from '@prisma/client';
 import { PrismaService } from '../../../../../prisma/prisma.service';
 import { NOT_FOUND_ERR_MESSAGE } from '../api/err.messages';
 import { BpiSubject } from '../models/bpiSubject';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
 import { BpiSubjectRole, BpiSubjectRoleName } from '../models/bpiSubjectRole';
 
 // Repositories are the only places that talk the Prisma language of models.
@@ -11,7 +12,7 @@ import { BpiSubjectRole, BpiSubjectRoleName } from '../models/bpiSubjectRole';
 // does not have to care about the ORM.
 @Injectable()
 export class BpiSubjectStorageAgent extends PrismaService {
-  constructor(@InjectMapper() private mapper: Mapper) {
+  constructor(@InjectMapper("pojos") private mapper: Mapper) {
     super();
   }
 
@@ -24,7 +25,11 @@ export class BpiSubjectStorageAgent extends PrismaService {
       return undefined;
     }
 
-    return this.mapper.map(bpiSubjectModel, BpiSubject, BpiSubject);
+    return this.mapper.map<BpiSubjectPrismaModel, BpiSubject>(
+      bpiSubjectModel,
+      'JustAPojoTestPrismaModel',
+      'JustAPojoTestDomainObject'
+    );
   }
 
   async getAllBpiSubjects(): Promise<BpiSubject[]> {

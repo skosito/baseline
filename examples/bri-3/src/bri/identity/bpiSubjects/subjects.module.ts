@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { AuthzModule } from '../../authz/authz.module';
 import { BpiSubjectAgent } from './agents/bpiSubjects.agent';
+import { BpiSubjectStorageAgent } from './agents/bpiSubjectsStorage.agent';
 import { SubjectController } from './api/subjects.controller';
 import { CreateBpiSubjectCommandHandler } from './capabilities/createBpiSubject/createBpiSubjectCommand.handler';
 import { DeleteBpiSubjectCommandHandler } from './capabilities/deleteBpiSubject/deleteBpiSubjectCommand.handler';
 import { GetAllBpiSubjectsQueryHandler } from './capabilities/getAllBpiSubjects/getAllBpiSubjectsQuery.handler';
 import { GetBpiSubjectByIdQueryHandler } from './capabilities/getBpiSubjectById/getBpiSubjectByIdQuery.handler';
 import { UpdateBpiSubjectCommandHandler } from './capabilities/updateBpiSubject/updateBpiSubjectCommand.handler';
-import { BpiSubjectStorageAgent } from './agents/bpiSubjectsStorage.agent';
 import { SubjectsProfile } from './subjects.profile';
-import { AuthzModule } from '../../authz/authz.module';
+import { SubjectsPojosProfile } from './subjectsPojos.profile';
 
 export const CommandHandlers = [
   CreateBpiSubjectCommandHandler,
@@ -30,6 +31,7 @@ export const QueryHandlers = [
     BpiSubjectAgent,
     BpiSubjectStorageAgent,
     SubjectsProfile,
+    SubjectsPojosProfile
   ],
   exports: [BpiSubjectAgent, BpiSubjectStorageAgent],
 })
